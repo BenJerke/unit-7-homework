@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+​
+<html lang="en-us">
+​
+<head>
+​
+  <meta charset="UTF-8">
+  <title>Train Schedule</title>
+​
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+​
+  <!-- Firebase References -->
+  <script src="https://www.gstatic.com/firebasejs/6.0.4/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.0.4/firebase-database.js"></script>
+​
+  <!-- Moment.js Reference -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+​
+  <style>
+    #train-table th,
+    td {
+      display: inline-block;
+      width: 16.575%;
+    }
+  </style>
+</head>
+​
+<body>
+​
+
+  <div class="container">
+​
+    <!-- title block -->
+    <div class="jumbotron" style="background-color: maroon; color: white">
+      <h1 class="text-center">Train Scheduler</h1>
+      <h3 class="text-center">It's Trains!</h3>
+    </div>
+​
+    <div class="row">
+​
+      <div class="col-md-12">
+​
+  
+        <div class="card mb-4">
+          <div class="card-header">Running Trains</div>
+          <div class="card-body">
+            <table class="table table-sm table-hover" id='train-table'>
+              <thead>
+                <tr>
+                  <th scope="col">Train Name</th>
+                  <th scope="col">Destination</th>
+                  <th scope="col">Frequency (min)</th>
+                  <th scope="col">Next Arrival</th>
+                  <th scope="col">Minutes Away</th>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+​
+    <div class="row">
+      <div class="col-md-12">
+
+        <div class="card mb-4">
+          <div class="card-header">Schedule a New Train</div>
+          <div class="card-body">
+
+            <!-- entry form starts here -->
+            <form>
+              <div class="form-group">
+                <label for="train-name-input">Train Name</label>
+                <input class="form-control" id="train-name-input" placeholder="Pineapple Express" type="text">
+              </div>
+              <div class="form-group">
+                <label for="destination-input">Destination</label>
+                <input class="form-control" id="destination-input" placeholder="Memphis" type="text">
+              </div>
+              <div class="form-group">
+                <label for="first-arrival-input">First Train Time (HH:mm - 24h clock)</label>
+                <input class="form-control" id="first-arrival-input" placeholder="04:30" type="text">
+              </div>
+              <div class="form-group">
+                <label for="frequency-input">Frequency (min)</label>
+                <input class="form-control" id="frequency-input" placeholder="90" type="text">
+              </div>
+              <button class="btn btn-primary float-right" id="add-train-btn">Submit</button>
+            </form>
+​            <!-- entry form ends here -->
+
+          </div>
+        </div>
+      </div>
+    </div>
+​
+  </div>
+​
+<!-- firebase call + javascript for populating schedule (move to .js file after code is working) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <script> 
+  var firebaseConfig = {
+    apiKey: "AIzaSyA92ob23zmwlR36JZetkw-Hfm2Hi3mGdc8",
+    authDomain: "unit-7-homework-1ea23.firebaseapp.com",
+    databaseURL: "https://unit-7-homework-1ea23.firebaseio.com",
+    projectId: "unit-7-homework-1ea23",
+    storageBucket: "unit-7-homework-1ea23.appspot.com",
+    messagingSenderId: "326033603137",
+    appId: "1:326033603137:web:fbb3d243533d6ae76924c0",
+    measurementId: "G-CDYQNTTSGD"
+  };
+
+firebase.initializeApp(firebaseConfig);
+
+var database = firebase.database();
+
+//load data from firebase and put it in the table
+
+
+
+
+  $("#add-train-btn").on("click", function(event) {
+      // Don't refresh the page!
+      event.preventDefault();
+
+      // Capture User Inputs and store them into variables
+      var trainName = $("#train-name-input").val()
+
+      var trainDestination = $("#destination-input").val()
+
+      var trainFirstArrival = $("#first-arrival-input").val()
+
+      var trainFrequency = $("#frequency-input").val()
+
+      // Console log each of the user inputs to confirm we are receiving them correctly
+      console.log(trainName);
+      console.log(trainDestination);
+      console.log(trainFirstArrival);
+      console.log(trainFrequency);
+
+
+
+      // Output all of the new information into table rows appended to the main table
+      $("tbody").append(((($("<tr>").append($("<td>").text(trainName))).append($("<td>").text(trainDestination)).append($("<td>").text(trainFrequency))).append($("<td>").text("next arrival"))).append($("<td>").text('minutes away')));
+
+
+      // Don't forget to provide initial data to your Firebase database.
+      database.ref().push({
+        trnName: trainName,
+        trnDest: trainDestination,
+        trnFirst: trainFirstArrival,
+        trnFreq: trainFrequency,
+
+      });
+
+    $("#train-name-input").val("")
+    $("#destination-input").val("")
+    $("#first-arrival-input").val("")
+    $("#frequency-input").val("")
+    
+
+
+
+    });
+
+
+
+
+
+
+
+    
+    
+    
+    
+    
+    </script>
+  
+  </body>
+</html>
