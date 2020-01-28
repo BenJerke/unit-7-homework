@@ -120,7 +120,37 @@ firebase.initializeApp(firebaseConfig);
 
 var database = firebase.database();
 
-//load data from firebase and put it in the table
+
+//get data from firebase and populate table on load
+
+database.ref().once('value', function(snapshot) {
+
+  snapshot.forEach(function (childSnapshot) {
+
+      //break down snapshot into usable format
+      var childKey = childSnapshot.key;
+      var childData = childSnapshot.val();
+      console.log(childKey)
+      console.log(childData)
+      //populate table with snapshot data
+      $("tbody").append(((($("<tr>").append($("<td>").text(childData.trnName))).append($("<td>").text(childData.trnDest)).append($("<td>").text(childData.trnFreq))).append($("<td>").text("next arrival"))).append($("<td>").text('minutes away')));
+
+  });
+ 
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -138,19 +168,19 @@ var database = firebase.database();
 
       var trainFrequency = $("#frequency-input").val()
 
-      // Console log each of the user inputs to confirm we are receiving them correctly
+
       console.log(trainName);
       console.log(trainDestination);
       console.log(trainFirstArrival);
       console.log(trainFrequency);
 
 
-
-      // Output all of the new information into table rows appended to the main table
+      // output all of the new information into table rows appended to the main table
       $("tbody").append(((($("<tr>").append($("<td>").text(trainName))).append($("<td>").text(trainDestination)).append($("<td>").text(trainFrequency))).append($("<td>").text("next arrival"))).append($("<td>").text('minutes away')));
 
-
-      // Don't forget to provide initial data to your Firebase database.
+   
+      
+      //adding data to firebase
       database.ref().push({
         trnName: trainName,
         trnDest: trainDestination,
@@ -165,21 +195,7 @@ var database = firebase.database();
     $("#frequency-input").val("")
     
 
-
-
     });
-
-
-
-
-
-
-
-    
-    
-    
-    
-    
     </script>
   
   </body>
