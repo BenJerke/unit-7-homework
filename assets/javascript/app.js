@@ -30,7 +30,12 @@ database.ref().on('value', function(snapshot) {
       var firstArrival = childData.trnFirst;
       console.log(freq)
       console.log(firstArrival)
-    
+       
+    //this is where i'm currently stuck. i know what i need to do, but i can't figure out how to translate it. 
+    //i need to add frequencies to the train's first arrival until that time is greater than the current time. this gives me the next train.
+    //then i need to subtract the current time from that time. this gives me minutes away. 
+    //problem is i can't figure out how to construct the loop i need. the iterator is abstracted. the conditions are going to be complicated. 
+
       var arrTrainTimes = [];
       for(i=0; i<24; i++){
         var times = moment(firstArrival).add(freq).format("HH:mm")
@@ -42,7 +47,7 @@ database.ref().on('value', function(snapshot) {
 
       
       //populate table with snapshot data
-      $("tbody").append(((($("<tr>").append($("<td>").text(childData.trnName))).append($("<td>").text(childData.trnDest)).append($("<td>").text(childData.trnFreq))).append($("<td>").text("next arrival"))).append($("<td>").text('minutes away')));
+      $("tbody").append(((($("<tr>").append($("<td>").text(childData.trnName))).append($("<td>").text(childData.trnDest)).append($("<td>").text(childData.trnFreq))).append($("<td>").text("math is hard"))).append($("<td>").text('minutes away')));
 
   });
 
